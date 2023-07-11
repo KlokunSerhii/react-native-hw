@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { Formik } from "formik";
+import { useDispatch } from "react-redux";
 import {
   View,
   Text,
@@ -12,19 +15,18 @@ import {
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import img from "../../assets/image/img-bg.png";
-import { useNavigation } from "@react-navigation/native";
-import { Formik } from "formik";
 import { SignupSchema } from "../../options/validForm";
 import { styles } from "./style.js";
+import { loginDB } from "../../redux/auth/authOptions";
 
 function LoginScreen() {
-  const [state, setState] = useState("");
   const [isShowKey, setIsShowKey] = useState(false);
   const navigation = useNavigation();
   const [isFocus, setIsFocus] = useState({
     email: false,
     password: false,
   });
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
@@ -41,8 +43,7 @@ function LoginScreen() {
   }, []);
 
   const handlerSubmit = (values) => {
-    navigation.navigate("Home"), setState(values);
-    console.log(state);
+    dispatch(loginDB(values));
   };
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -141,7 +142,6 @@ function LoginScreen() {
                       handlerSubmit(values);
                       resetForm({
                         values: {
-                          login: "",
                           email: "",
                           password: "",
                         },

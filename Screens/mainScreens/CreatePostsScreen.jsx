@@ -11,11 +11,13 @@ import {
   Button,
 } from "react-native";
 import { Camera, CameraType } from "expo-camera";
-import * as MediaLibrary from "expo-media-library";
 import { Entypo, EvilIcons, MaterialIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
+import { collection, addDoc } from "firebase/firestore";
+import { db, storage } from "../../firebase/config";
+import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 
 function CreatePostsScreen() {
   const [type, setType] = useState(CameraType.back);
@@ -64,6 +66,7 @@ function CreatePostsScreen() {
 
   const sendPhoto = () => {
     if (photo !== "") {
+      uploadPhotoToServer();
       navigation.navigate("Default", { photo, location, text, locationText });
       setPhoto("");
       setText("");
@@ -74,6 +77,29 @@ function CreatePostsScreen() {
   const deletePhoto = () => {
     setPhoto("");
   };
+
+  const uploadPhotoToServer = async () => {
+    try {
+      const response = await fetch(photo);
+      const file = await response.blob();
+      const uniqueImageId = Date.now().toString();
+      const path = `images/${uniqueImageId}.jpeg`;
+
+      const storageRef = ref(storage, path);
+      const metadata = {
+        contentType: "image/jpeg",
+      };
+
+      await uploadBytes(storageRef, file, metadata);
+
+      const downloadPhoto = await getDownloadURL(storageRef);
+
+      return downloadPhoto;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>

@@ -20,7 +20,6 @@ function CommentsScreen({ route }) {
 
   const send = () => {
     setSendMessage(message);
-    console.log(sendMessage);
   };
   useEffect(() => {
     setPhoto(route.params);

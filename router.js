@@ -6,22 +6,28 @@ import Home from "./Screens/mainScreens/Home";
 const AuthStack = createStackNavigator();
 const HomeStack = createStackNavigator();
 
-export const useRoute = (isLogin) => {
+export const useRoute = (isAuth) => {
+  if (!isAuth) {
+    return (
+      <AuthStack.Navigator
+        initialRouteName="Login"
+        screenOptions={{ headerShown: false }}
+      >
+        <AuthStack.Screen name="Login" component={LoginScreen} />
+        <AuthStack.Screen name="Registration" component={RegistrationScreen} />
+      </AuthStack.Navigator>
+    );
+  }
   return (
-    <AuthStack.Navigator
+    <HomeStack.Navigator
       initialRouteName="Login"
       screenOptions={{ headerShown: false }}
     >
-      <AuthStack.Screen name="Login" component={LoginScreen} />
-      <AuthStack.Screen name="Registration" component={RegistrationScreen} />
-
-      {!isLogin && (
-        <HomeStack.Screen
-          options={{ headerShown: false }}
-          name="Home"
-          component={Home}
-        />
-      )}
-    </AuthStack.Navigator>
+      <HomeStack.Screen
+        options={{ headerShown: false }}
+        name="Home"
+        component={Home}
+      />
+    </HomeStack.Navigator>
   );
 };

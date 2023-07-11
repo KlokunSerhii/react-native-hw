@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
+import { useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import {
   View,
@@ -20,7 +21,6 @@ import { ImageBackground } from "react-native";
 import { SignupSchema } from "../../options/validForm";
 import { styles } from "./style.js";
 import { authSignUp } from "../../redux/auth/authOptions";
-import { useDispatch } from "react-redux";
 
 function RegistrationScreen() {
   const [isShowKey, setIsShowKey] = useState(false);
@@ -48,7 +48,6 @@ function RegistrationScreen() {
   }, []);
 
   const handlerSubmit = (values) => {
-    navigation.navigate("Home");
     dispatch(authSignUp(values));
   };
 
