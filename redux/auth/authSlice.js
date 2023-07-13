@@ -13,6 +13,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     updateUserProfile(state, { payload }) {
+      console.log(payload);
       state.userId = payload.userId;
       state.login = payload.login;
       state.email = payload.email;

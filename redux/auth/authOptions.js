@@ -28,17 +28,7 @@ export const loginDB =
   ({ email, password }) =>
   async (dispatch, getState) => {
     try {
-      const user = await signInWithEmailAndPassword(auth, email, password);
-
-      if (user) {
-        dispatch(
-          updateUserProfile({
-            userId: user.uid,
-            login: user.displayName,
-            email: user.email,
-          })
-        );
-      }
+      await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       console.log(error);
     }
@@ -57,11 +47,13 @@ export const authStateChangeUser = () => async (dispatch, getState) => {
   try {
     await onAuthStateChanged(auth, (user) => {
       if (user) {
+        const { uid, displayName, email } = user;
+
         dispatch(
           updateUserProfile({
-            userId: user.uid,
-            login: user.displayName,
-            email: user.email,
+            userId: uid,
+            login: displayName,
+            email: email,
           })
         );
         dispatch(authStateChange({ stateChange: true }));

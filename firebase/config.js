@@ -1,21 +1,22 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+// Функція для підключення бази даних у проект
 import { getFirestore } from "firebase/firestore";
+// Функція для підключення сховища файлів в проект
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCy2akrMPfvyuG7o8gNS3_88F-BFZuL2Fo",
-  authDomain: "react-798a0.firebaseapp.com",
-  databaseURL: "https://react-798a0-default-rtdb.firebaseio.com",
-  projectId: "react-798a0",
-  storageBucket: "react-798a0.appspot.com",
-  messagingSenderId: "303201600676",
-  appId: "1:303201600676:web:fa13003bf0e65e62649231",
+  apiKey: "AIzaSyCBKZlyDtoJ5mp6FojfhfPY33ZwLDHTfnw",
+  authDomain: "hw-go-it-react-native.firebaseapp.com",
+  projectId: "hw-go-it-react-native",
+  storageBucket: "hw-go-it-react-native.appspot.com",
+  messagingSenderId: "417180274557",
+  appId: "1:417180274557:web:eaca2f69da5d70d63ac614",
 };
 
 // Initialize Firebase
-
 const app = initializeApp(firebaseConfig);
+
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);

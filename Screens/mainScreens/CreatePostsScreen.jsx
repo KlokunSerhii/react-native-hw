@@ -15,9 +15,8 @@ import { Entypo, EvilIcons, MaterialIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
-import { collection, addDoc } from "firebase/firestore";
-import { db, storage } from "../../firebase/config";
-import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { storage } from "../../firebase/config";
 
 function CreatePostsScreen() {
   const [type, setType] = useState(CameraType.back);
@@ -28,7 +27,6 @@ function CreatePostsScreen() {
   const [text, setText] = useState("");
   const [locationText, setLocationText] = useState("");
   const navigation = useNavigation();
-
   if (!permission) {
     return <View />;
   }
@@ -62,6 +60,7 @@ function CreatePostsScreen() {
     };
     setLocation(coords);
     setPhoto(photo.uri);
+    console.log(photo);
   };
 
   const sendPhoto = () => {
@@ -81,25 +80,20 @@ function CreatePostsScreen() {
   const uploadPhotoToServer = async () => {
     try {
       const response = await fetch(photo);
+
       const file = await response.blob();
-      const uniqueImageId = Date.now().toString();
-      const path = `images/${uniqueImageId}.jpeg`;
+      const uniquePostId = Date.now().toString();
 
-      const storageRef = ref(storage, path);
-      const metadata = {
-        contentType: "image/jpeg",
-      };
+      const storageRef = ref(storage, `postImage/${uniquePostId}`);
 
-      await uploadBytes(storageRef, file, metadata);
+      await uploadBytes(storageRef, file);
 
-      const downloadPhoto = await getDownloadURL(storageRef);
-
-      return downloadPhoto;
+      const getStorageRef = await getDownloadURL(storageRef);
+      return getStorageRef;
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   };
-
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
