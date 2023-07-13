@@ -10,14 +10,31 @@ import {
 import { Feather, EvilIcons } from "@expo/vector-icons";
 import foto from "../../assets/image/Rectangle.png";
 import { useNavigation } from "@react-navigation/native";
+import { collection, getDocs } from "firebase/firestore";
+import { useSelector } from "react-redux";
+import { db } from "../../firebase/config";
 
-function DefaultScreenPost({ route }) {
+function DefaultScreenPost() {
   const [posts, setPosts] = useState([]);
   const navigation = useNavigation();
 
+  const user = useSelector((state) => state.auth.login);
+  const email = useSelector((state) => state.auth.email);
+
   useEffect(() => {
-    if (route.params) setPosts((prev) => [...prev, route.params]);
-  }, [route.params]);
+    getAllPosts();
+  }, []);
+
+  const getAllPosts = async () => {
+    const querySnapshot = await getDocs(collection(db, "posts"));
+
+    if (querySnapshot) {
+      setPosts(
+        querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      );
+    }
+  };
+
   return (
     <View style={styles.container}>
       {!foto ? (
@@ -26,12 +43,11 @@ function DefaultScreenPost({ route }) {
         <View style={styles.avatar}>
           <Image source={foto} style={styles.avatarImage} />
           <View style={{ marginLeft: 10 }}>
-            <Text>Name User</Text>
-            <Text>email@gmail.com</Text>
+            <Text>{user}</Text>
+            <Text>{email}</Text>
           </View>
         </View>
       )}
-
       <FlatList
         data={posts}
         renderItem={({ item }) => (
@@ -44,7 +60,10 @@ function DefaultScreenPost({ route }) {
               <TouchableOpacity
                 style={styles.textlocation}
                 onPress={() => {
-                  navigation.navigate("Comments", item.photo);
+                  navigation.navigate("Comments", {
+                    id: item.id,
+                    photo: item.photo,
+                  });
                 }}
               >
                 <Feather name="message-circle" size={24} color="#BDBDBD" />

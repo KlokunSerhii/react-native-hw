@@ -16,7 +16,9 @@ import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { storage } from "../../firebase/config";
+import { db, storage } from "../../firebase/config";
+import { addDoc, collection } from "firebase/firestore";
+import { useSelector } from "react-redux";
 
 function CreatePostsScreen() {
   const [type, setType] = useState(CameraType.back);
@@ -27,6 +29,9 @@ function CreatePostsScreen() {
   const [text, setText] = useState("");
   const [locationText, setLocationText] = useState("");
   const navigation = useNavigation();
+  const login = useSelector((state) => state.auth.login);
+  const userId = useSelector((state) => state.auth.userId);
+
   if (!permission) {
     return <View />;
   }
@@ -60,13 +65,12 @@ function CreatePostsScreen() {
     };
     setLocation(coords);
     setPhoto(photo.uri);
-    console.log(photo);
   };
 
   const sendPhoto = () => {
     if (photo !== "") {
-      uploadPhotoToServer();
-      navigation.navigate("Default", { photo, location, text, locationText });
+      uploadPostToServer();
+      navigation.navigate("Default");
       setPhoto("");
       setText("");
       setLocationText("");
@@ -76,19 +80,33 @@ function CreatePostsScreen() {
   const deletePhoto = () => {
     setPhoto("");
   };
+  const uploadPostToServer = async () => {
+    const photo = await uploadPhotoToServer();
+    try {
+      const docRef = await addDoc(collection(db, "posts"), {
+        photo,
+        title: text,
+        location,
+        locationText,
+        userId,
+        login,
+      });
 
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  };
   const uploadPhotoToServer = async () => {
     try {
       const response = await fetch(photo);
-
       const file = await response.blob();
       const uniquePostId = Date.now().toString();
-
       const storageRef = ref(storage, `postImage/${uniquePostId}`);
-
       await uploadBytes(storageRef, file);
 
-      const getStorageRef = await getDownloadURL(storageRef);
+      const getStorageRef = await getDownloadURL(ref(storageRef));
+
       return getStorageRef;
     } catch (error) {
       throw error;
