@@ -61,7 +61,7 @@ function DefaultScreenPost() {
                 style={styles.textlocation}
                 onPress={() => {
                   navigation.navigate("Comments", {
-                    id: item.id,
+                    postId: item.id,
                     photo: item.photo,
                   });
                 }}

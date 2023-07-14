@@ -19,11 +19,11 @@ function CommentsScreen({ route }) {
   const [isFocus, setIsFocus] = useState({
     send: false,
   });
-  const { userId, login } = useSelector((state) => state.auth);
   const [commentsList, setCommentsList] = useState("");
   const [message, setMessage] = useState("");
 
-  const { id, photo } = route.params;
+  const { userId, login } = useSelector((state) => state.auth);
+  const { postId, photo } = route.params;
 
   useEffect(() => {
     getCommentsList();
@@ -31,17 +31,18 @@ function CommentsScreen({ route }) {
 
   const createComments = async () => {
     const uniqName = Date.now().toString();
-    await setDoc(doc(db, "posts", id, "comments", uniqName), {
+    await setDoc(doc(db, "posts", postId, "comments", uniqName), {
       login,
       message,
       userId,
       createdAt: commentDate(),
     });
+    keyboardHide();
   };
 
   const getCommentsList = async () => {
     const querySnapshot = await getDocs(
-      collection(db, "posts", id, "comments")
+      collection(db, "posts", postId, "comments")
     );
     if (querySnapshot) {
       setCommentsList(
@@ -50,8 +51,12 @@ function CommentsScreen({ route }) {
     }
   };
 
+  const keyboardHide = () => {
+    Keyboard.dismiss();
+  };
+
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
         <View style={styles.list}>
           <Image source={{ uri: photo }} style={styles.Image} />

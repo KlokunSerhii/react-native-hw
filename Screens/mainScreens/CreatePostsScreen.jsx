@@ -90,6 +90,7 @@ function CreatePostsScreen() {
         locationText,
         userId,
         login,
+        likes: 0,
       });
 
       console.log("Document written with ID: ", docRef.id);
