@@ -27,7 +27,7 @@ const PostsScreens = () => {
           headerTitle: "Публікації",
           headerTitleAlign: "center",
           headerStyle: {
-            height: 88,
+            height: 58,
             backgroundColor: "#FFF",
           },
           headerTitleStyle: {
@@ -52,7 +52,7 @@ const PostsScreens = () => {
           headerTitle: "Коментарі",
           headerTitleAlign: "center",
           headerStyle: {
-            height: 88,
+            height: 58,
             backgroundColor: "#FFF",
           },
           headerTitleStyle: {
@@ -69,7 +69,7 @@ const PostsScreens = () => {
           headerTitle: "Мапа",
           headerTitleAlign: "center",
           headerStyle: {
-            height: 88,
+            height: 58,
             backgroundColor: "#FFF",
           },
           headerTitleStyle: {

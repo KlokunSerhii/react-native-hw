@@ -27,7 +27,6 @@ function DefaultScreenPost() {
 
   const getAllPosts = async () => {
     const querySnapshot = await getDocs(collection(db, "posts"));
-
     if (querySnapshot) {
       setPosts(
         querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))

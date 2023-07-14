@@ -14,6 +14,7 @@ import { Feather } from "@expo/vector-icons";
 import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { useSelector } from "react-redux";
+import foto from "../../assets/image/Rectangle.png";
 
 function CommentsScreen({ route }) {
   const [isFocus, setIsFocus] = useState({
@@ -24,7 +25,6 @@ function CommentsScreen({ route }) {
 
   const { userId, login } = useSelector((state) => state.auth);
   const { postId, photo } = route.params;
-
   useEffect(() => {
     getCommentsList();
   }, []);
@@ -38,6 +38,7 @@ function CommentsScreen({ route }) {
       createdAt: commentDate(),
     });
     keyboardHide();
+    setMessage("");
   };
 
   const getCommentsList = async () => {
@@ -50,7 +51,6 @@ function CommentsScreen({ route }) {
       );
     }
   };
-
   const keyboardHide = () => {
     Keyboard.dismiss();
   };
@@ -64,11 +64,21 @@ function CommentsScreen({ route }) {
         <FlatList
           data={commentsList}
           renderItem={({ item }) => (
-            <View style={{ width: 100 }}>
-              <Text style={styles.login}>{item.login}</Text>
-              <View style={styles.commentTextContainer}>
+            <View
+              style={
+                item.userId === userId
+                  ? styles.commentBox
+                  : { ...styles.commentBox, flexDirection: "row-reverse" }
+              }
+            >
+              <View style={styles.commentTextWrapper}>
                 <Text style={styles.commentText}>{item.message}</Text>
                 <Text style={styles.commentDate}>{item.createdAt}</Text>
+              </View>
+              <View style={styles.commentAvatar}>
+                {foto ? (
+                  <Image style={styles.commentAvatar} source={foto} />
+                ) : null}
               </View>
             </View>
           )}
@@ -95,6 +105,7 @@ function CommentsScreen({ route }) {
               send: false,
             });
           }}
+          value={message}
           onChangeText={(value) => setMessage(value)}
         />
         <TouchableOpacity style={styles.iconBtn} onPress={createComments}>
@@ -111,10 +122,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     backgroundColor: "#fff",
+    paddingHorizontal: 16,
   },
+  list: { marginTop: 32, marginBottom: 16 },
+
   input: {
     alignItems: "center",
-    marginHorizontal: 16,
     height: 50,
     borderWidth: 1,
     borderColor: "#BDBDBD",
@@ -140,19 +153,37 @@ const styles = StyleSheet.create({
   },
   Image: {
     height: 240,
-    marginHorizontal: 16,
     borderRadius: 8,
+  },
+  commentBox: {
+    marginBottom: 24,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 16,
+  },
+  commentTextWrapper: {
+    backgroundColor: "rgba(0, 0, 0, 0.03)",
+    borderRadius: 6,
+    padding: 16,
+    width: 250,
+    flexGrow: 1,
+  },
+  commentDate: {
+    fontFamily: "RobotoMono-Regular",
+    fontSize: 10,
+    color: "#bdbdbd",
   },
   commentText: {
     fontFamily: "RobotoMono-Regular",
     fontSize: 13,
     color: "#212121",
   },
-
-  commentDate: {
-    fontFamily: "RobotoMono-Regular",
-    fontSize: 10,
-    color: "#bdbdbd",
+  commentAvatar: {
+    borderRadius: 100,
+    width: 28,
+    height: 28,
+    backgroundColor: "#BDBDBD",
   },
 });
 

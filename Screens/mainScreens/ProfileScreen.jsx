@@ -46,7 +46,6 @@ const ProfileScreen = () => {
       console.log(error);
     }
   };
-
   const updateLikes = async (likes, itemId) => {
     try {
       const likeRef = doc(db, "posts", itemId);
@@ -57,11 +56,10 @@ const ProfileScreen = () => {
       console.log("err", error.message);
     }
   };
-
+  ``;
   useEffect(() => {
     getPosts();
   }, []);
-
   return (
     <ImageBackground style={styles.imgBg} source={img}>
       <View style={styles.box}>
@@ -118,7 +116,7 @@ const ProfileScreen = () => {
                       <Feather
                         name="message-circle"
                         size={24}
-                        color="#BDBDBD"
+                        // color={item.comments > 0 ? "#FF6C00" : "#BDBDBD"}
                       />
                       <Text style={{ ...styles.text, color: "#BDBDBD" }}>
                         0

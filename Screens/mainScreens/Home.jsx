@@ -58,7 +58,7 @@ const Home = ({ navigation }) => {
           headerTitle: "Створити публікацію",
           headerTitleAlign: "center",
           headerStyle: {
-            height: 88,
+            height: 58,
             backgroundColor: "#fff",
           },
           headerTitleStyle: {
@@ -91,7 +91,7 @@ const Home = ({ navigation }) => {
           headerTitle: "Профіль",
           headerTitleAlign: "center",
           headerStyle: {
-            height: 88,
+            height: 58,
             backgroundColor: "#FFF",
           },
           headerTitleStyle: {
