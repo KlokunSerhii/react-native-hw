@@ -18,7 +18,6 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../../firebase/config";
-
 import foto from "../../assets/image/Rectangle.png";
 import { EvilIcons, Feather, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -46,6 +45,7 @@ const ProfileScreen = () => {
       console.log(error);
     }
   };
+
   const updateLikes = async (likes, itemId) => {
     try {
       const likeRef = doc(db, "posts", itemId);
@@ -56,10 +56,11 @@ const ProfileScreen = () => {
       console.log("err", error.message);
     }
   };
-  ``;
+
   useEffect(() => {
     getPosts();
   }, []);
+
   return (
     <ImageBackground style={styles.imgBg} source={img}>
       <View style={styles.box}>
@@ -87,7 +88,7 @@ const ProfileScreen = () => {
             </View>
           </View>
         )}
-        <View style={{ marginTop: 110 }}>
+        <View style={{ marginTop: 130 }}>
           <FlatList
             data={posts}
             renderItem={({ item }) => (
@@ -119,7 +120,7 @@ const ProfileScreen = () => {
                         // color={item.comments > 0 ? "#FF6C00" : "#BDBDBD"}
                       />
                       <Text style={{ ...styles.text, color: "#BDBDBD" }}>
-                        0
+                        {0}
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -215,7 +216,8 @@ const styles = StyleSheet.create({
     position: "relative",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    marginTop: 100,
+    marginTop: 103,
+    height: "80%",
     backgroundColor: "#FFFFFF",
   },
   avatarImage: {

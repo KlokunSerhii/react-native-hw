@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { Camera, CameraType } from "expo-camera";
 import { Entypo, EvilIcons, MaterialIcons } from "@expo/vector-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -21,6 +21,7 @@ import { addDoc, collection } from "firebase/firestore";
 import { useSelector } from "react-redux";
 
 function CreatePostsScreen() {
+  const [isShowKey, setIsShowKey] = useState(false);
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [photo, setPhoto] = useState("");
@@ -31,6 +32,20 @@ function CreatePostsScreen() {
   const navigation = useNavigation();
   const login = useSelector((state) => state.auth.login);
   const userId = useSelector((state) => state.auth.userId);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setIsShowKey(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setIsShowKey(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   if (!permission) {
     return <View />;
@@ -134,7 +149,7 @@ function CreatePostsScreen() {
           </Camera>
           <View>
             <View>
-              <TouchableOpacity style={{ marginLeft: 16, marginTop: 8 }}>
+              <TouchableOpacity style={{ marginLeft: 16, marginTop: 5 }}>
                 <Text
                   style={{
                     color: "#BDBDBD",
@@ -147,7 +162,7 @@ function CreatePostsScreen() {
               </TouchableOpacity>
             </View>
 
-            <View style={{ marginTop: 16 }}>
+            <View style={{ marginTop: 10 }}>
               <TextInput
                 placeholderTextColor={"#BDBDBD"}
                 placeholder="Назва..."
@@ -157,7 +172,7 @@ function CreatePostsScreen() {
               />
             </View>
 
-            <View style={{ marginTop: 16 }}>
+            <View style={{ marginTop: 10 }}>
               <TextInput
                 placeholder="Місцевість..."
                 placeholderTextColor={"#BDBDBD"}

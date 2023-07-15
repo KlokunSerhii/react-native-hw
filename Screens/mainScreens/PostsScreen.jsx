@@ -31,6 +31,7 @@ const PostsScreens = () => {
             backgroundColor: "#FFF",
           },
           headerTitleStyle: {
+            marginTop: 20,
             fontFamily: "RobotoMono-Regular",
             fontSize: 20,
           },
@@ -56,6 +57,7 @@ const PostsScreens = () => {
             backgroundColor: "#FFF",
           },
           headerTitleStyle: {
+            marginTop: 20,
             fontFamily: "RobotoMono-Regular",
             fontSize: 20,
           },
@@ -73,6 +75,7 @@ const PostsScreens = () => {
             backgroundColor: "#FFF",
           },
           headerTitleStyle: {
+            marginTop: 20,
             fontFamily: "RobotoMono-Regular",
             fontSize: 20,
           },

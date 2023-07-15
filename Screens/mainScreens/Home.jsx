@@ -62,6 +62,7 @@ const Home = ({ navigation }) => {
             backgroundColor: "#fff",
           },
           headerTitleStyle: {
+            marginTop: 10,
             fontFamily: "RobotoMono-Regular",
             fontSize: 20,
           },
@@ -91,10 +92,11 @@ const Home = ({ navigation }) => {
           headerTitle: "Профіль",
           headerTitleAlign: "center",
           headerStyle: {
-            height: 58,
+            height: 68,
             backgroundColor: "#FFF",
           },
           headerTitleStyle: {
+            marginTop: 5,
             fontFamily: "RobotoMono-Regular",
             fontSize: 20,
           },
