@@ -52,7 +52,7 @@ function DefaultScreenPost() {
           <View style={styles.list}>
             <Image source={{ uri: item.photo }} style={styles.Image} />
             <View style={styles.labelPhoto}>
-              <Text style={styles.labelText}>{item.text}</Text>
+              <Text style={styles.labelText}>{item.title}</Text>
             </View>
             <View style={styles.infoPhoto}>
               <TouchableOpacity

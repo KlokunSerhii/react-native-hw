@@ -12,15 +12,16 @@ import {
 import {
   collection,
   doc,
+  getDocs,
   onSnapshot,
   query,
   updateDoc,
   where,
 } from "firebase/firestore";
+import { useNavigation } from "@react-navigation/native";
 import { db } from "../../firebase/config";
 import foto from "../../assets/image/Rectangle.png";
 import { EvilIcons, Feather, Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import img from "../../assets/image/img-bg.png";
 import { authSignOutUser } from "../../redux/auth/authOptions";
 
@@ -36,7 +37,7 @@ const ProfileScreen = () => {
 
   const getPosts = async () => {
     try {
-      const ref = collection(db, "posts");
+      const ref = await collection(db, "posts");
       const filter = query(ref, where("userId", "==", userId));
       onSnapshot(filter, (snapshot) => {
         const posts = [];
@@ -61,11 +62,9 @@ const ProfileScreen = () => {
       console.log("err", error.message);
     }
   };
-
   useEffect(() => {
     getPosts();
   }, []);
-
   return (
     <ImageBackground style={styles.imgBg} source={img}>
       <View style={styles.box}>
@@ -112,7 +111,7 @@ const ProfileScreen = () => {
               <View style={styles.list}>
                 <Image source={{ uri: item.photo }} style={styles.Image} />
                 <View style={styles.labelPhoto}>
-                  <Text style={styles.labelText}>{item.text}</Text>
+                  <Text style={styles.labelText}>{item.title}</Text>
                 </View>
                 <View style={styles.infoPhoto}>
                   <View
@@ -134,7 +133,7 @@ const ProfileScreen = () => {
                       <Feather
                         name="message-circle"
                         size={24}
-                        // color={item.comments > 0 ? "#FF6C00" : "#BDBDBD"}
+                        color={"#BDBDBD"}
                       />
                       <Text style={{ ...styles.text, color: "#BDBDBD" }}>
                         {0}
@@ -150,13 +149,13 @@ const ProfileScreen = () => {
                         name="thumbs-up"
                         size={24}
                         color={item.likes > 0 ? "#FF6C00" : "#BDBDBD"}
-                        style={{ marginRight: 10 }}
+                        style={{ marginRight: 5 }}
                       />
                     </TouchableOpacity>
                     <Text
                       style={{
                         ...styles.text,
-                        color: item.likes > 0 ? "#FF6C00" : "#BDBDBD",
+                        color: "#BDBDBD",
                       }}
                     >
                       {item.likes}
@@ -221,6 +220,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   labelText: {
+    color: "#212121",
     fontSize: 16,
     fontFamily: "RobotoMono-Regular",
   },

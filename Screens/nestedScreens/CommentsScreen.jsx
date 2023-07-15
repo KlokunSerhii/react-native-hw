@@ -24,7 +24,7 @@ function CommentsScreen({ route }) {
   const [message, setMessage] = useState("");
   const { userId, login } = useSelector((state) => state.auth);
   const { postId, photo } = route.params;
-
+  console.log(commentsList);
   useEffect(() => {
     getCommentsList();
   }, []);
