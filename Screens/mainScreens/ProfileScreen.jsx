@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   View,
   StyleSheet,
@@ -22,12 +22,17 @@ import foto from "../../assets/image/Rectangle.png";
 import { EvilIcons, Feather, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import img from "../../assets/image/img-bg.png";
+import { authSignOutUser } from "../../redux/auth/authOptions";
 
 const ProfileScreen = () => {
   const [posts, setPosts] = useState([]);
-  const userId = useSelector((state) => state.auth.userId);
-  const user = useSelector((state) => state.auth.login);
+  const { userId, login } = useSelector((state) => state.auth);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const handlerLogOut = () => {
+    dispatch(authSignOutUser());
+  };
 
   const getPosts = async () => {
     try {
@@ -83,11 +88,23 @@ const ProfileScreen = () => {
             )}
             <View style={{ marginLeft: 10 }}>
               <Text style={{ fontSize: 30, fontFamily: "RobotoMono-Regular" }}>
-                {user}
+                {login}
               </Text>
             </View>
           </View>
         )}
+        <TouchableOpacity
+          style={{
+            position: "absolute",
+            top: 20,
+            right: 20,
+            width: 20,
+            height: 20,
+          }}
+          onPress={handlerLogOut}
+        >
+          <Feather name="log-out" size={20} color="rgba(33, 33, 33, 0.8)" />
+        </TouchableOpacity>
         <View style={{ marginTop: 130 }}>
           <FlatList
             data={posts}

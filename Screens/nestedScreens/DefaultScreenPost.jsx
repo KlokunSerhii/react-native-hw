@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { collection, getDocs } from "firebase/firestore";
+import { useSelector } from "react-redux";
 import {
   TouchableOpacity,
   View,
@@ -8,18 +11,14 @@ import {
   Text,
 } from "react-native";
 import { Feather, EvilIcons } from "@expo/vector-icons";
+
 import foto from "../../assets/image/Rectangle.png";
-import { useNavigation } from "@react-navigation/native";
-import { collection, getDocs } from "firebase/firestore";
-import { useSelector } from "react-redux";
 import { db } from "../../firebase/config";
 
 function DefaultScreenPost() {
   const [posts, setPosts] = useState([]);
   const navigation = useNavigation();
-
-  const user = useSelector((state) => state.auth.login);
-  const email = useSelector((state) => state.auth.email);
+  const { login, email } = useSelector((state) => state.auth);
 
   useEffect(() => {
     getAllPosts();
@@ -42,7 +41,7 @@ function DefaultScreenPost() {
         <View style={styles.avatar}>
           <Image source={foto} style={styles.avatarImage} />
           <View style={{ marginLeft: 10 }}>
-            <Text>{user}</Text>
+            <Text>{login}</Text>
             <Text>{email}</Text>
           </View>
         </View>
